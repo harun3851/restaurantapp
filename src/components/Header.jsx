@@ -4,7 +4,8 @@ import Avatar from '../img/avatar.png';
 import {MdShoppingBasket} from "react-icons/md";
 import {motion} from "framer-motion";
 import { Link } from 'react-router-dom';
-
+import { useStateValue} from "../context/StateProvider";
+import {actionType} from "../context/reducer";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from "../firebase.config";
 
@@ -13,10 +14,14 @@ import {app} from "../firebase.config";
 const Header = () => {
 const firebaseAuth = getAuth(app);
 const provider= new GoogleAuthProvider();
-
+const[{user}, dispatch]=useStateValue();
 
 const login = async ()=> {
-  const response = await signInWithPopup(firebaseAuth, provider);
+  const {user : {refreshToken, ProviderData}} = await signInWithPopup(firebaseAuth, provider);
+  dispatch({
+    type:actionType.SET_USER,
+    user: ProviderData[0]
+  })
 };
 
   return (
