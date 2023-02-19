@@ -105,6 +105,15 @@ const login = async () => {
               <img src={Logo} className="w-8 object-cover" alt="logo"/>
                 <p className="text-headingColor text-x1 font-bold">City</p>
             </Link>
+            
+            <div className="relative flex items-center justify-center">
+            <MdShoppingBasket className="text-textColor text-2xl ml-8 cursor-pointer" />
+            <div className="absolute -top-2 -right-2  w-5 h-5 rounded-full bg-cartNumBg flex items-center
+            justify-center">
+              <p className="text-xs text-white font-semibold">2</p>
+            </div>
+            </div>
+
             <div className="relative" >
            < motion.img 
               whileTap={{scale:0.5}}
@@ -122,6 +131,8 @@ const login = async () => {
             <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-00 
           transition-all duration-100 ease-in-out text-textColor text-base">New Item<MdAdd /></p> 
               </Link>
+           
+           
           )}
 
           <ul className="flex flex-col  px-4 py-2 ">
