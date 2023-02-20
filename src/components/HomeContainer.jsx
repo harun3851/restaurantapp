@@ -1,6 +1,6 @@
 import React from 'react';
 import Delivery from '../img/delivery.png';
-
+import HeroBg from "../img/heroBg.png";
 const HomeContainer = () => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full" id="home">
@@ -28,7 +28,9 @@ const HomeContainer = () => {
       className="bg-gradient-to-br from-orange-400 to-orange-500 w-full px-4 py-2 rounded-lg 
       hover:shadow-lg transition-all ease-in-out duration-100 md:w-auto">order now</button> 
     </div>
-    <div className="py-2 bg-blue-400 flex-1"></div>
+    <div className="py-2 flex-1 flex items-center">
+      <img src={HeroBg} className="ml top-16 right-16 h-685" alt="hero-bg"/>
+    </div>
   </section>
   );
 };
