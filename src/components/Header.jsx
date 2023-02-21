@@ -101,36 +101,36 @@ const login = async () => {
           </div>
      {/*mobile*/}
         <div className="flex md:hidden items-center justify-between w-full h-full" >
-            <Link to={"/"} className="flex items-center gap-2">
-              <img src={Logo} className="w-8 object-cover" alt="logo"/>
+      <Link to={"/"} className="flex items-center gap-2">
+               <img src={Logo} className="w-8 object-cover" alt="logo"/>
                 <p className="text-headingColor text-x1 font-bold">City</p>
-            </Link>
+      </Link>
             
-            <div className="relative flex items-center justify-center">
+        <div className="relative flex items-center justify-center">
             <MdShoppingBasket className="text-textColor text-2xl ml-8 cursor-pointer" />
             <div className="absolute -top-2 -right-2  w-5 h-5 rounded-full bg-cartNumBg flex items-center
-            justify-center">
+              justify-center">
               <p className="text-xs text-white font-semibold">2</p>
             </div>
-            </div>
+        </div>
 
-            <div className="relative" >
-           < motion.img 
-              whileTap={{scale:0.5}}
-              src={user ? user.photoURL:Avatar}  
-              className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-md cursor-pointer rounded-full" 
-              alt="userprofile"
-              onClick={login}/>
+        <div className="relative" >
+              < motion.img 
+                whileTap={{scale:0.5}}
+                src={user ? user.photoURL:Avatar}  
+                className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-md cursor-pointer rounded-full" 
+                alt="userprofile"
+                onClick={login}/>
         {
           isMenu && (  <div className="w-40 bg-gray-50 shadow-xl rounded-lg flex flex-col absolute 
           top-12 right-0">
 
         {
           user&& user.email === "harunkoyuncu38@gmail.com"&&(
-            <Link to={'/create'}>
-            <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-00 
+      <Link to={"/createItem"}>
+             <p className="px-4 py-2 flex items-center gap-3 cursor-pointer hover:bg-slate-00 
           transition-all duration-100 ease-in-out text-textColor text-base">New Item<MdAdd /></p> 
-              </Link>
+      </Link>
            
            
           )}
