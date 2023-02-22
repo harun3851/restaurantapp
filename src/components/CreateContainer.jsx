@@ -6,7 +6,14 @@ import { MdDelete } from 'react-icons/md';
 import Loader from './Loader';
 import { categories } from '../utils/data';
 import { useState } from "react";
-import { upload } from '@testing-library/user-event/dist/upload';
+
+import {
+  deleteObject,
+  getDownloadURL,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { storage } from "../firebase.config";
 
 const CreateContainer = () => {
 
@@ -18,13 +25,53 @@ const CreateContainer = () => {
   const [fields, setFields]=useState(false);
   const [alertStatus, setAlertStatus]=useState("danger");
   const [msg, setMsg]=useState(null);
-  const [isLoading, setIsloading]=useState(false);
-  const deleteImage= () => {};
-  const uploadImage= (e) => {
-    setIsloading(true);
-    const imageFile = e.target.files[0];
-    console.log(imageFile);
+  const [isLoading, setIsLoading]=useState(false);
+ 
+  const deleteImage= () => {
+    setIsLoading(true);
+    const deleteRef = ref(storage, imageAsset);
+    deleteObject(deleteRef).then(storage, imageAsset);
+    setImageAsset(null);
+    setIsLoading(false);
+    setFields(true);
+    setMsg("image deleted successfully");
+    setAlertStatus("success");
+    setTimeout(()=>{
+      setFields(false);
+    },4000);
   };
+
+  const uploadImage= (e) => {
+    setIsLoading(true);
+    const imageFile = e.target.files[0];
+    const storageRef = ref(storage, `Images/${Date.now()}-${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+    uploadTask.on('state_change', (snapshot)=>{
+      const uploadProgress = (snapshot.bytesTransferred / snapshot.totalBytes)*100;
+    },(error) =>{
+      console.log(error);
+      setFields(true);
+      setMsg('Error while uploading:Try Again');
+      setAlertStatus('danger')
+      setTimeout(()=>{
+        setFields(false);
+        setIsLoading(false);
+      }, 4000);
+    },()=>{
+      getDownloadURL(uploadTask.snapshot.ref).then(downloadURL =>{
+        setImageAsset(downloadURL);
+        setIsLoading(false);
+        setFields(true);
+        setMsg('Image uploaded successfully ');
+        setAlertStatus('success');
+        setTimeout(()=>{
+          setFields(false);
+        },4000);
+      });
+    }
+    );
+  };
+  
   const saveDetails= () => {};
 
 
