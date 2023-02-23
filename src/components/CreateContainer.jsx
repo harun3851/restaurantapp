@@ -14,6 +14,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { storage } from "../firebase.config";
+import { saveItem } from '../utils/firebaseFunction';
 
 const CreateContainer = () => {
 
@@ -63,17 +64,68 @@ const CreateContainer = () => {
         setIsLoading(false);
         setFields(true);
         setMsg('Image uploaded successfully ');
+        clearData();
         setAlertStatus('success');
         setTimeout(()=>{
           setFields(false);
+        
         },4000);
       });
     }
     );
   };
   
-  const saveDetails= () => {};
+  const saveDetails= () => {
+    setIsLoading(true);
+    try{
+      if((!title || !calories || !imageAsset || !price || !category)){
 
+      setFields(true);
+      setMsg("required fields cant be empty");
+      setAlertStatus('danger')
+      setTimeout(()=>{
+        setFields(false);
+        setIsLoading(false);
+      }, 4000);
+      }else{
+        const data={
+        id:`${Date.now()}`,
+        title:title,
+        imageURL:imageAsset,
+        category:category,
+        calories:calories,
+        gty:1,
+        price:price 
+      }
+      saveItem(data)
+      setIsLoading(false);
+      setFields(true);
+      setMsg('Data uploaded successfully ');
+      setAlertStatus('success');
+      setTimeout(()=>{
+        setFields(false);
+      },4000);
+      }
+    }catch (error){
+      console.log(error);
+      setFields(true);
+      setMsg('Error while uploading:Try Again');
+      setAlertStatus('danger')
+      setTimeout(()=>{
+        setFields(false);
+        setIsLoading(false);
+      }, 4000);
+  };
+  };
+
+  const clearData= ()=>{
+    setTitle("");
+    setImageAsset(null);
+    setCalories("");
+    setPrice("");
+    setCalories("Select Category");
+    
+  }
 
   return (
     <div className="w-full min-h-screen flex h-auto items center justify-center">
