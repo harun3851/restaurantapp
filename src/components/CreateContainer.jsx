@@ -6,12 +6,17 @@ import { MdDelete } from 'react-icons/md';
 import Loader from './Loader';
 import { categories } from '../utils/data';
 import { useState } from "react";
+import { useStateValue } from '../context/StateProvider';
+import { getAllFoodItems } from "../utils/firebaseFunction";
+import { actionType } from '../context/reducer';
+
 
 import {
   deleteObject,
   getDownloadURL,
   ref,
   uploadBytesResumable,
+ 
 } from "firebase/storage";
 import { storage } from "../firebase.config";
 import { saveItem } from '../utils/firebaseFunction';
@@ -27,6 +32,7 @@ const CreateContainer = () => {
   const [alertStatus, setAlertStatus]=useState("danger");
   const [msg, setMsg]=useState(null);
   const [isLoading, setIsLoading]=useState(false);
+  const[{foodItems}, dispatch] = useStateValue();
  
   const deleteImage= () => {
     setIsLoading(true);
@@ -64,11 +70,9 @@ const CreateContainer = () => {
         setIsLoading(false);
         setFields(true);
         setMsg('Image uploaded successfully ');
-        clearData();
         setAlertStatus('success');
         setTimeout(()=>{
           setFields(false);
-        
         },4000);
       });
     }
@@ -102,6 +106,7 @@ const CreateContainer = () => {
       setFields(true);
       setMsg('Data uploaded successfully ');
       setAlertStatus('success');
+      clearData();
       setTimeout(()=>{
         setFields(false);
       },4000);
@@ -115,7 +120,8 @@ const CreateContainer = () => {
         setFields(false);
         setIsLoading(false);
       }, 4000);
-  };
+  }
+    fetchData();
   };
 
   const clearData= ()=>{
@@ -123,9 +129,18 @@ const CreateContainer = () => {
     setImageAsset(null);
     setCalories("");
     setPrice("");
-    setCalories("Select Category");
+    setCalories("");
     
   }
+
+  const fetchData =  async () =>{
+    await getAllFoodItems().then((data)=>{
+      dispatch({
+        type: actionType.SET_FOOD_ITEMS,
+        foodItems : data
+      })
+    });
+  };
 
   return (
     <div className="w-full min-h-screen flex h-auto items center justify-center">
